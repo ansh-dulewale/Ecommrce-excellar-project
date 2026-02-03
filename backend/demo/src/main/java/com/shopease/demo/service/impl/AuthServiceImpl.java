@@ -6,6 +6,7 @@ import com.shopease.demo.dto.RegisterRequest;
 import com.shopease.demo.dto.UserResponse;
 import com.shopease.demo.entity.User;
 import com.shopease.demo.repository.UserRepository;
+import com.shopease.demo.security.JwtUtil;
 import com.shopease.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
     public static UserResponse touserResponse(User user){
         return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole().name());
     }
@@ -35,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Invalid Email or Password"));
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) throw new RuntimeException("Invalid Password");
-
-        return new LoginResponse(user.getId(), user.getName(), user.getEmail(), user.getRole().name());
+        return new LoginResponse(user.getId(), user.getName(), user.getEmail(), user.getRole().name(), jwtUtil.generateToken(user.getEmail()));
     }
 }
