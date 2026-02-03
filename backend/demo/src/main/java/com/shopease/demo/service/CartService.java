@@ -1,4 +1,4 @@
 package com.shopease.demo.service;
 
-public class CartService {
+public interface CartService {
 }
