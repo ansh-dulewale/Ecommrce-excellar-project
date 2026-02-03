@@ -19,12 +19,12 @@ public class CartItem {
 
     // Many items belong to one cart
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     // Many cart items can refer to one product
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private int quantity;
