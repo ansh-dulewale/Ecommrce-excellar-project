@@ -1,6 +1,8 @@
 package com.shopease.demo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Entity
@@ -9,8 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends BaseEntity {
-
     private String name;
-
     private double price;
+    private String description;
+    private String image_url;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
