@@ -22,7 +22,7 @@ public class ProductController {
 
     // 🔐 ADMIN APIs
 
-    @PostMapping("/admin/products")
+    @PostMapping("/products")
     public ResponseEntity<ProductResponse> createProduct(
             @RequestBody ProductRequest request) {
         return new ResponseEntity<>(
