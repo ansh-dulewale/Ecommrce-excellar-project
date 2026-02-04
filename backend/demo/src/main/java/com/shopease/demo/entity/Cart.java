@@ -26,13 +26,11 @@ public class Cart {
   @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CartItem> cartItems = new ArrayList<>();
 
-  // Constructor for new cart
   public Cart(User user) {
     this.user = user;
     this.cartItems = new ArrayList<>();
   }
 
-  // BUSINESS LOGIC METHOD (THIS WAS MISSING)
   public void addProduct(Product product) {
     for (CartItem item : cartItems) {
       if (item.getProduct().getId().equals(product.getId())) {
