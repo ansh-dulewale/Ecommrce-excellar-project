@@ -1,18 +1,12 @@
 package com.shopease.demo.controller;
 
-import com.shopease.demo.dto.CartItemResponseDTO;
 import com.shopease.demo.dto.CartResponseDTO;
-import com.shopease.demo.entity.Cart;
 import com.shopease.demo.entity.User;
 import com.shopease.demo.mapper.CartMapper;
 import com.shopease.demo.service.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")

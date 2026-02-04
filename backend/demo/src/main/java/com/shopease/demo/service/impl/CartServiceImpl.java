@@ -20,6 +20,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCartForUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
         return cartRepository.findByUser(user)
                 .orElseGet(() -> cartRepository.save(new Cart(user)));
     }
