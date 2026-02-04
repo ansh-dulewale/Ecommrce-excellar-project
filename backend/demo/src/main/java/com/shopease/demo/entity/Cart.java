@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.shopease.demo.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +15,20 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart extends BaseEntity{
+public class Cart{
 
-  @ManyToOne
-    @JoinColumn(name="user_id",nullable=false)
-    private User user;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;   // 👈 YOUR ENTITY User
+
+  @OneToMany(
+          mappedBy = "cart",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true
+  )
   private List<CartItem> cartItems = new ArrayList<>();
-
 }
