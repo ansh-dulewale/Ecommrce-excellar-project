@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.shopease.demo.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +23,12 @@ public class Cart{
 
   @OneToOne
   @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  private User user;   // 👈 YOUR ENTITY User
 
-  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<CartItem> items = new ArrayList<>();
-
-  public Cart(User user) {
-    this.user = user;
-  }
-
-  public void addProduct(Product product) {
-    for (CartItem item : items) {
-      if (item.getProduct().getId().equals(product.getId())) {
-        item.setQuantity(item.getQuantity() + 1);
-        return;
-      }
-    }
-
-    CartItem newItem = new CartItem(this, product, 1);
-    items.add(newItem);
-  }
+  @OneToMany(
+          mappedBy = "cart",
+          cascade = CascadeType.ALL,
+          orphanRemoval = true
+  )
+  private List<CartItem> cartItems = new ArrayList<>();
 }
