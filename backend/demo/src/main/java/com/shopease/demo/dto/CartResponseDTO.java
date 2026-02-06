@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class CartResponseDTO {
     private List<CartItemResponseDTO> items;
-    private double totalamount;
+    private double totalAmount;
 }
