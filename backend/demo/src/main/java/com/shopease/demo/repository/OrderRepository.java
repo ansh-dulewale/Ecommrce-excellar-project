@@ -2,7 +2,7 @@ package com.shopease.demo.repository;
 
 import com.shopease.demo.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.User;
+import com.shopease.demo.entity.User;
 
 import java.util.List;
 

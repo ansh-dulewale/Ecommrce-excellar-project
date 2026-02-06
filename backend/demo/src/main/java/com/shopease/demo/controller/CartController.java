@@ -18,7 +18,7 @@ public class CartController {
 
     @GetMapping
     public CartResponseDTO getCart(@AuthenticationPrincipal User user) {
-        return cartMapper.toResponse(cartService.getCartForUser(user));
+        return cartMapper.toDto(cartService.getCartForUser(user));
     }
 
     @PostMapping("/add/{productId}")
@@ -26,7 +26,7 @@ public class CartController {
             @AuthenticationPrincipal User user,
             @PathVariable Long productId
     ) {
-        return cartMapper.toResponse(
+        return cartMapper.toDto(
                 cartService.addProductToCart(user, productId)
         );
     }
@@ -36,7 +36,7 @@ public class CartController {
             @AuthenticationPrincipal User user,
             @PathVariable Long productId
     ) {
-        return cartMapper.toResponse(
+        return cartMapper.toDto(
                 cartService.decreaseProductQuantity(user, productId)
         );
     }
@@ -46,13 +46,13 @@ public class CartController {
             @AuthenticationPrincipal User user,
             @PathVariable Long productId
     ) {
-        return cartMapper.toResponse(
+        return cartMapper.toDto(
                 cartService.removeProductFromCart(user, productId)
         );
     }
 
     @DeleteMapping("/clear")
     public CartResponseDTO clearCart(@AuthenticationPrincipal User user) {
-        return cartMapper.toResponse(cartService.clearCart(user));
+        return cartMapper.toDto(cartService.clearCart(user));
     }
 }
