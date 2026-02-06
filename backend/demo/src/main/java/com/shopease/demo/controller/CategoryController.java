@@ -5,9 +5,9 @@ import com.shopease.demo.repository.CategoryRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/categories")
+@RequestMapping("/api/categories")
 @CrossOrigin(origins = "*")
-public class CategoryController {
+public class    CategoryController {
 
     private final CategoryRepository categoryRepository;
 
