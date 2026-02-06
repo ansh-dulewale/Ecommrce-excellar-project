@@ -2,11 +2,7 @@ package com.shopease.demo.service.impl;
 
 import com.shopease.demo.dto.OrderItemResponseDTO;
 import com.shopease.demo.dto.OrderResponseDTO;
-import com.shopease.demo.entity.Cart;
-import com.shopease.demo.entity.CartItem;
-import com.shopease.demo.entity.Order;
-import com.shopease.demo.entity.OrderItem;
-import com.shopease.demo.entity.User;
+import com.shopease.demo.entity.*;
 import com.shopease.demo.enums.OrderStatus;
 import com.shopease.demo.repository.CartItemRepository;
 import com.shopease.demo.repository.CartRepository;
@@ -21,7 +17,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
@@ -38,9 +33,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponseDTO> getOrders(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
 
         return orderRepository.findByUser(user)
                 .stream()
@@ -49,23 +42,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private OrderResponseDTO createOrderFromCart(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User cannot be null");
-        }
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
 
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        if (cart.getCartItems().isEmpty()) {
+        if (cart.getCartItems().isEmpty())
             throw new RuntimeException("Cart is empty");
-        }
 
         Order order = new Order();
         order.setUser(user);
         order.setOrderStatus(OrderStatus.PLACED);
         order.setCreatedAt(LocalDateTime.now());
 
-        double totalAmount = 0;
+        double total = 0;
 
         for (CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
@@ -73,12 +63,11 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(cartItem.getProduct().getPrice());
-
             order.getOrderItems().add(orderItem);
-            totalAmount += orderItem.getPrice() * orderItem.getQuantity();
+            total += orderItem.getPrice() * orderItem.getQuantity();
         }
 
-        order.setTotalAmount(totalAmount);
+        order.setTotalAmount(total);
         Order savedOrder = orderRepository.save(order);
 
         cartItemRepository.deleteAll(cart.getCartItems());
@@ -95,19 +84,17 @@ public class OrderServiceImpl implements OrderService {
         response.setStatus(order.getOrderStatus().name());
         response.setCreatedAt(order.getCreatedAt());
 
-        List<OrderItemResponseDTO> items = order.getOrderItems()
-                .stream()
-                .map(item -> {
+        response.setItems(
+                order.getOrderItems().stream().map(item -> {
                     OrderItemResponseDTO dto = new OrderItemResponseDTO();
                     dto.setProductId(item.getProduct().getId());
                     dto.setProductName(item.getProduct().getName());
                     dto.setQuantity(item.getQuantity());
                     dto.setPrice(item.getPrice());
                     return dto;
-                })
-                .toList();
+                }).toList()
+        );
 
-        response.setItems(items);
         return response;
     }
 }
