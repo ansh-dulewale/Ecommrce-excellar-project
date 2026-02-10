@@ -1,0 +1,17 @@
+import { Link } from "react-router-dom";
+
+function Navbar() {
+  return (
+    <nav className="bg-blue-600 text-white p-4 flex justify-between">
+      <h1 className="font-bold text-xl">ShopEase</h1>
+
+      <div className="space-x-4">
+        <Link to="/">Products</Link>
+        <Link to="/admin/products">Admin Products</Link>
+        <Link to="/admin/orders">Orders</Link>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
